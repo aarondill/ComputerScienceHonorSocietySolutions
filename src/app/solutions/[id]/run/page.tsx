@@ -47,18 +47,17 @@ async function CodeOutput({ path }: { path: string }) {
 		</>
 	);
 }
-function CodeScript({ filepath }: { filepath: string }) {
-	const publicPath = path.resolve("public");
-	const src = `/${path.relative(publicPath, filepath)}`;
-	return <script defer type="module" src={src}></script>;
-}
+// function CodeScript({ filepath }: { filepath: string }) {
+// 	const publicPath = path.resolve("public");
+// 	const src = `/${path.relative(publicPath, filepath)}`;
+// 	return <script defer type="module" src={src}></script>;
+// }
 
 async function Main({ name }: { name: string }) {
 	const { code } = await getSolutionFiles(name);
 	if (!code) return <div>Could not find code named {name}</div>;
 	return (
 		<>
-			{/* <CodeScript filepath={code}></CodeScript> */}
 			<Loading>
 				<SolutionCode name={name} filepath={code}></SolutionCode>
 			</Loading>
@@ -68,10 +67,11 @@ async function Main({ name }: { name: string }) {
 					<CodeOutput path={code}></CodeOutput>
 				</Loading>
 			</ScrollableOutput>
-			<div>
-				Press ctrl+shift+j to open the console and reload the tab to see the
-				output.
-			</div>
+			{/* <CodeScript filepath={code}></CodeScript> */}
+			{/* <div> */}
+			{/* 	Press ctrl+shift+j to open the console and reload the tab to see the */}
+			{/* 	output. */}
+			{/* </div> */}
 		</>
 	);
 }
