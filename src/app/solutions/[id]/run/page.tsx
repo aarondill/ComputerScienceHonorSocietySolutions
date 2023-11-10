@@ -4,7 +4,10 @@ import { SolutionCode } from "@/components/Code";
 import { spawn } from "child_process";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
-import type { ChildProcessWithoutNullStreams } from "node:child_process";
+import {
+	spawnSync,
+	type ChildProcessWithoutNullStreams,
+} from "node:child_process";
 
 async function runTsNode(
 	codepath: string
@@ -14,6 +17,8 @@ async function runTsNode(
 > {
 	if (!codepath) return { error: "No path provided", success: false };
 	let res: ChildProcessWithoutNullStreams;
+	console.log(process.env.PATH);
+	console.log(spawnSync("which", ["ts-node"]).stdout.toString());
 	try {
 		res = spawn("ts-node", ["--", codepath], {
 			cwd: ".",
