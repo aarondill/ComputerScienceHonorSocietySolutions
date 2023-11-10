@@ -1,9 +1,9 @@
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
-import { Suspense } from "react";
 import { SolutionCode } from "@/components/Code";
 import { spawn } from "child_process";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
+import Loading from "@/components/Loading";
 
 async function runTsNode(
 	codepath: string
@@ -51,13 +51,13 @@ async function Main({ name }: { name: string }) {
 	return (
 		<>
 			{/* <script defer type="module" src={src}></script> */}
-			<Suspense>
+			<Loading>
 				<SolutionCode name={name} filepath={code}></SolutionCode>
-			</Suspense>
-			<Suspense>
+			</Loading>
+			<Loading>
 				Output ({path.basename(code)}):
 				<CodeOutput path={code}></CodeOutput>
-			</Suspense>
+			</Loading>
 			{/* <div> */}
 			{/* 	Press ctrl+shift+j to open the console and reload the tab to see the */}
 			{/* 	output. */}
@@ -69,11 +69,9 @@ async function Main({ name }: { name: string }) {
 export default function Pages({ params }: { params: { id: string } }) {
 	const name = params.id;
 	return (
-		<>
-			<Suspense>
-				<Main name={name}></Main>
-			</Suspense>
-		</>
+		<Loading>
+			<Main name={name}></Main>
+		</Loading>
 	);
 }
 

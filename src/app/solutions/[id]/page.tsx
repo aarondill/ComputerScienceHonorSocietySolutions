@@ -1,10 +1,10 @@
-import { Suspense } from "react";
 import { getSolutionFiles, getSolutions } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Loading from "@/components/Loading";
 
 async function Main({ name }: { name: string }) {
 	const publicDir = path.resolve("public");
@@ -12,18 +12,18 @@ async function Main({ name }: { name: string }) {
 	return (
 		<>
 			<h4>Code:</h4>
-			<Suspense>
-				{code ? (
+			{code ? (
+				<Loading>
 					<div>
 						<SolutionCode name={name} filepath={code}></SolutionCode>
 						<Link href={path.join(name, "run")}>
 							Press me to run this code in your browser!
 						</Link>
 					</div>
-				) : (
-					<div>Could not find code</div>
-				)}
-			</Suspense>
+				</Loading>
+			) : (
+				<div>Could not find code</div>
+			)}
 			<h4>Screenshot:</h4>
 			Here is a screenshot of the code (for meeting requirements):
 			{screenshot ? (

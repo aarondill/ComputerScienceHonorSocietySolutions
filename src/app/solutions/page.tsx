@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import { getSolutions } from "@/lib/getSolutions";
 import type { Metadata } from "next";
+import Loading from "@/components/Loading";
 async function SolutionsList() {
 	const sols = await getSolutions();
 	return (
@@ -19,9 +19,9 @@ export default function Page() {
 	return (
 		<>
 			<h1>Solutions</h1>
-			<Suspense fallback={<div>Loading...</div>}>
+			<Loading>
 				<SolutionsList></SolutionsList>
-			</Suspense>
+			</Loading>
 		</>
 	);
 }
