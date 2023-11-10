@@ -248,7 +248,7 @@ const config = {
 	env: {
 		browser: true,
 	},
-	plugins: ["@typescript-eslint", "functional"],
+	plugins: ["@typescript-eslint"],
 	extends: [
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
