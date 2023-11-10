@@ -27,10 +27,15 @@ async function Main({ name }: { name: string }) {
 			<h4>Screenshot:</h4>
 			Here is a screenshot of the code (for meeting requirements):
 			{screenshot ? (
-				<Image
-					src={`/${path.relative(publicDir, screenshot)}`}
-					style={{ height: "40vh", display: "block" }}
-					alt="A screenshot of the code displayed above"></Image>
+				<div style={{ height: "40vh", display: "block", position: "relative" }}>
+					<Image
+						src={`/${path.relative(publicDir, screenshot)}`}
+						style={{ objectFit: "contain", objectPosition: "left top" }}
+						fill
+						priority
+						quality={20} // lower quality -- faster rendering
+						alt="A screenshot of the code displayed above"></Image>
+				</div>
 			) : (
 				<div>No screenshot found</div>
 			)}
@@ -63,18 +68,6 @@ export default async function Page({ params }: Props) {
 		</>
 	);
 }
-
-// export async function getStaticPaths() {
-// 	const sols = await getSolutions();
-// 	return {
-// 		paths: sols.map(file => ({
-// 			params: {
-// 				id: file,
-// 			},
-// 		})),
-// 		fallback: false,
-// 	};
-// }
 
 export function generateMetadata({ params }: Props) {
 	return {
