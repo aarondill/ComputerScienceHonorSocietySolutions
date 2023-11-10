@@ -1,10 +1,9 @@
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
 import { SolutionCode } from "@/components/Code";
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
-import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 async function runTsNode(
 	codepath: string
@@ -13,19 +12,13 @@ async function runTsNode(
 	| { code: number; output: string; success: true }
 > {
 	if (!codepath) return { error: "No path provided", success: false };
-	let res: ChildProcessWithoutNullStreams;
-	try {
-		res = spawn("ts-node", ["--", codepath], {
-			cwd: ".",
-			stdio: "pipe",
-			timeout: 100 * 1000, // 100 seconds
-			windowsHide: true,
-		});
-	} catch (err) {
-		if (typeof err === "object" && err && "message" in err)
-			return { error: String(err.message), success: false };
-		return { error: String(err), success: false };
-	}
+	const exec = path.resolve("node_modules", ".bin", "ts-node");
+	const res = spawn(exec, ["--", codepath], {
+		cwd: ".",
+		stdio: "pipe",
+		timeout: 100 * 1000, // 100 seconds
+		windowsHide: true,
+	});
 	const output: string[] = [];
 
 	res.stdout.on("data", (data: Buffer) => {
@@ -35,9 +28,9 @@ async function runTsNode(
 		output.push(data.toString("utf8"));
 	});
 
-	return await new Promise((resolve, reject) => {
+	return await new Promise(resolve => {
 		res.on("error", err => {
-			reject(err);
+			resolve({ error: err.message, success: false });
 		});
 		res.on("close", code => {
 			resolve({ code: code ?? 0, output: output.join(""), success: true });
