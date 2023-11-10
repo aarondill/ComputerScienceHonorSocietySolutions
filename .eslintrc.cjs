@@ -243,7 +243,7 @@ const config = {
 		ecmaVersion: "latest",
 		sourceType: "module",
 		impliedStrict: true,
-		project: "./tsconfig.eslint.json",
+		project: "./tsconfig.json",
 	},
 	env: {
 		browser: true,
