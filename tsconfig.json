@@ -9,7 +9,8 @@
     "noEmit": true,
     "strict": true,
     "declarationDir": "types",
-    "declaration": true
+    "declaration": true,
+    "isolatedModules": true
   },
   "exclude": ["node_modules"]
 }
