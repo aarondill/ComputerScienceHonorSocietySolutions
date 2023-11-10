@@ -130,50 +130,51 @@ const tsRules = {
 		},
 	],
 	"@typescript-eslint/dot-notation": "warn",
-	"@typescript-eslint/naming-convention": [
-		"warn",
-		{
-			format: null,
-			leadingUnderscore: "allow",
-			modifiers: ["requiresQuotes"],
-			// Allow any format for quoted properties
-			selector: "property",
-			trailingUnderscore: "allow",
-		},
-		{
-			format: ["camelCase", "UPPER_CASE"],
-			leadingUnderscore: "allow",
-			// Allow camelCase or upper_case for non-quoted properties
-			selector: "property",
-			trailingUnderscore: "allow",
-		},
-		{
-			format: ["PascalCase"],
-			// Force PascalCase for types and typeLikes
-			selector: "typeLike",
-		},
-		{
-			format: ["PascalCase"],
-			leadingUnderscore: "allow",
-			modifiers: ["unused"],
-			// Allow leading Underscores for *unused* types and typeLikes
-			selector: "typeLike",
-		},
-		{
-			format: ["camelCase", "UPPER_CASE"],
-			leadingUnderscore: "allow",
-			// Allow variables to be camelCase or CONSTANT and _underscores_
-			selector: "variable",
-			trailingUnderscore: "allow",
-		},
-		{
-			format: ["camelCase"],
-			leadingUnderscore: "allow",
-			// Allow underscores on either side of camelCased defaults
-			selector: "default",
-			trailingUnderscore: "allow",
-		},
-	],
+	// This'll never work with React/Next
+	// "@typescript-eslint/naming-convention": [
+	// 	"warn",
+	// 	{
+	// 		format: null,
+	// 		leadingUnderscore: "allow",
+	// 		modifiers: ["requiresQuotes"],
+	// 		// Allow any format for quoted properties
+	// 		selector: "property",
+	// 		trailingUnderscore: "allow",
+	// 	},
+	// 	{
+	// 		format: ["camelCase", "UPPER_CASE"],
+	// 		leadingUnderscore: "allow",
+	// 		// Allow camelCase or upper_case for non-quoted properties
+	// 		selector: "property",
+	// 		trailingUnderscore: "allow",
+	// 	},
+	// 	{
+	// 		format: ["PascalCase"],
+	// 		// Force PascalCase for types and typeLikes
+	// 		selector: "typeLike",
+	// 	},
+	// 	{
+	// 		format: ["PascalCase"],
+	// 		leadingUnderscore: "allow",
+	// 		modifiers: ["unused"],
+	// 		// Allow leading Underscores for *unused* types and typeLikes
+	// 		selector: "typeLike",
+	// 	},
+	// 	{
+	// 		format: ["camelCase", "UPPER_CASE"],
+	// 		leadingUnderscore: "allow",
+	// 		// Allow variables to be camelCase or CONSTANT and _underscores_
+	// 		selector: "variable",
+	// 		trailingUnderscore: "allow",
+	// 	},
+	// 	{
+	// 		format: ["camelCase"],
+	// 		leadingUnderscore: "allow",
+	// 		// Allow underscores on either side of camelCased defaults
+	// 		selector: "default",
+	// 		trailingUnderscore: "allow",
+	// 	},
+	// ],
 	"@typescript-eslint/no-confusing-non-null-assertion": "warn",
 	"@typescript-eslint/no-empty-interface": "warn",
 	"@typescript-eslint/no-extra-non-null-assertion": "error",
@@ -252,6 +253,7 @@ const config = {
 	extends: [
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"next",
 	],
 
 	overrides: [],
