@@ -2,6 +2,7 @@ import "highlight.js/styles/default.min.css";
 import path from "path";
 import hljs from "highlight.js/lib/core";
 import fs from "fs/promises";
+import { ScrollableOutput } from "./ScrollableOutput";
 
 import hljs_javascript from "highlight.js/lib/languages/javascript";
 import hljs_typescript from "highlight.js/lib/languages/typescript";
@@ -25,17 +26,9 @@ export async function SolutionCode({
 	return (
 		<>
 			{path.basename(filepath)}:
-			<div
-				style={{
-					overflowY: "scroll",
-					maxHeight: height ?? "30vh",
-					marginBottom: "1rem",
-					outline: "black solid 2px",
-				}}>
-				<code>
-					<pre dangerouslySetInnerHTML={{ __html: highlighted }}></pre>
-				</code>
-			</div>
+			<ScrollableOutput
+				height={height}
+				dangerouslySetInnerHTML={{ __html: highlighted }}></ScrollableOutput>
 		</>
 	);
 }
