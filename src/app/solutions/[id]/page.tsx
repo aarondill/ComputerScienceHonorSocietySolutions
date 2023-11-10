@@ -45,7 +45,7 @@ async function Main({ name }: { name: string }) {
 				<video controls style={{ height: "40vh", display: "block" }}>
 					<source
 						src={`/${path.relative(publicDir, video)}`}
-						type="video/mp4"
+						type={`video/${path.extname(video).slice(1)}`}
 					/>
 				</video>
 			) : (
