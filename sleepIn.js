@@ -42,3 +42,6 @@ assert_eq(true, sleepIn, true, true); // the missing case
 // Undefined should be false -- default to not on vacation
 assert_eq(true, sleepIn, false);
 assert_eq(false, sleepIn, true);
+
+// Note: Only include this line if running in node.
+export {};
