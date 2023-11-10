@@ -12,8 +12,7 @@ async function runTsNode(
 	| { code: number; output: string; success: true }
 > {
 	if (!codepath) return { error: "No path provided", success: false };
-	const exec = path.resolve("node_modules", ".bin", "ts-node");
-	const res = spawn(exec, ["--", codepath], {
+	const res = spawn("bun", ["run", "--", codepath], {
 		cwd: ".",
 		stdio: "pipe",
 		timeout: 100 * 1000, // 100 seconds
@@ -40,7 +39,7 @@ async function runTsNode(
 async function CodeOutput({ path }: { path: string }) {
 	const output = await runTsNode(path);
 	if (!output.success)
-		return <div>Failed to spawn ts-node. Error: {output.error}</div>;
+		return <div>Something went wrong! Error: {output.error}</div>;
 	return (
 		<>
 			{output.output}
@@ -59,16 +58,16 @@ async function Main({ name }: { name: string }) {
 	if (!code) return <div>Could not find code named {name}</div>;
 	return (
 		<>
-			<CodeScript filepath={code}></CodeScript>
+			{/* <CodeScript filepath={code}></CodeScript> */}
 			<Loading>
 				<SolutionCode name={name} filepath={code}></SolutionCode>
 			</Loading>
-			{/* Output ({path.basename(code)}): */}
-			{/* <ScrollableOutput> */}
-			{/* 	<Loading> */}
-			{/* 		<CodeOutput path={code}></CodeOutput> */}
-			{/* 	</Loading> */}
-			{/* </ScrollableOutput> */}
+			Output ({path.basename(code)}):
+			<ScrollableOutput>
+				<Loading>
+					<CodeOutput path={code}></CodeOutput>
+				</Loading>
+			</ScrollableOutput>
 			<div>
 				Press ctrl+shift+j to open the console and reload the tab to see the
 				output.
