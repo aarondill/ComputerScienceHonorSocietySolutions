@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es2020", "DOM"],
+    "lib": [
+      "es2020",
+      "DOM"
+    ],
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "resolveJsonModule": true,
@@ -10,7 +13,24 @@
     "strict": true,
     "declarationDir": "types",
     "declaration": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
