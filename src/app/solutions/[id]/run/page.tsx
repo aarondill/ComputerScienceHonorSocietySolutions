@@ -37,10 +37,10 @@ async function CodeOutput({ path }: { path: string }) {
 	const output = await runTsNode(path);
 	if (!output) return <div>Failed to spawn ts-node</div>;
 	return (
-		<ScrollableOutput>
+		<>
 			{output.output}
 			-- Exited with code {output.code} --
-		</ScrollableOutput>
+		</>
 	);
 }
 
@@ -54,10 +54,12 @@ async function Main({ name }: { name: string }) {
 			<Loading>
 				<SolutionCode name={name} filepath={code}></SolutionCode>
 			</Loading>
-			<Loading>
-				Output ({path.basename(code)}):
-				<CodeOutput path={code}></CodeOutput>
-			</Loading>
+			Output ({path.basename(code)}):
+			<ScrollableOutput>
+				<Loading>
+					<CodeOutput path={code}></CodeOutput>
+				</Loading>
+			</ScrollableOutput>
 			{/* <div> */}
 			{/* 	Press ctrl+shift+j to open the console and reload the tab to see the */}
 			{/* 	output. */}
