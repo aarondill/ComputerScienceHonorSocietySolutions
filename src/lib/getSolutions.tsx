@@ -8,7 +8,9 @@ export const VIDEO_EXTENSIONS = [".mp4", ".webm"];
 export const SCREENSHOT_EXTENSIONS = [".png", ".jpg"];
 
 export async function getSolutions(): Promise<string[]> {
-	return await fs.readdir(SOLUTIONS_DIR);
+	return await fs
+		.readdir(SOLUTIONS_DIR, { withFileTypes: true })
+		.then(cont => cont.filter(v => v.isDirectory()).map(d => d.name));
 }
 // Finds a file based on the given matcher
 export async function getSolutionFile(
@@ -33,7 +35,11 @@ export async function getSolutionFiles(name: string) {
 	const files = await fs.readdir(namePath);
 
 	const findFile = (exts: string[]) => {
-		const f = files.find(n => exts.includes(path.extname(n)));
+		const f = files.find(n => {
+			const ext = path.extname(n);
+			// Check that project/project.valid -- not: project/code.valid
+			return path.basename(n, ext) === name && exts.includes(ext);
+		});
 		return f && path.join(namePath, f);
 	};
 
