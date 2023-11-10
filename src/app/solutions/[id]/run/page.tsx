@@ -1,13 +1,9 @@
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
 import { SolutionCode } from "@/components/Code";
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
-import {
-	spawnSync,
-	type ChildProcessWithoutNullStreams,
-} from "node:child_process";
 
 async function runTsNode(
 	codepath: string
@@ -16,9 +12,8 @@ async function runTsNode(
 	| { code: number; output: string; success: true }
 > {
 	if (!codepath) return { error: "No path provided", success: false };
-	console.log(process.env.PATH);
-	console.log(spawnSync("which", ["ts-node"]).stdout.toString());
-	const res = spawn("ts-node", ["--", codepath], {
+	const exec = path.resolve("node_modules", ".bin", "ts-node");
+	const res = spawn(exec, ["--", codepath], {
 		cwd: ".",
 		stdio: "pipe",
 		timeout: 100 * 1000, // 100 seconds
