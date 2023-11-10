@@ -1,3 +1,6 @@
+import Navigation from "@/components/Navigation";
+import type { Metadata } from "next";
+
 export default function RootLayout({
 	children,
 }: {
@@ -5,12 +8,15 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				<Navigation
+					routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
+				{children}
+			</body>
 		</html>
 	);
 }
 
-import type { Metadata } from "next";
 export const metadata: Metadata = {
 	title: {
 		template: "CSHS Solutions: %s",
