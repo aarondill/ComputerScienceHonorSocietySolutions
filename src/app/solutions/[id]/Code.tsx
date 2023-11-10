@@ -1,4 +1,4 @@
-"use server";
+import "highlight.js/styles/default.min.css";
 import path from "path";
 import hljs from "highlight.js/lib/core";
 import fs from "fs/promises";
