@@ -16,7 +16,7 @@ export default function RootLayout({
 	);
 }
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 export const metadata: Metadata = {
 	title: {
 		template: "CSHS Solutions: %s",

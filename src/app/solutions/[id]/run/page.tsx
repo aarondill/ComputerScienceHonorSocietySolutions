@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 	const src = `/${path.relative(publicDir, code)}`;
 	return (
 		<>
-			<script type="module" src={src}></script>
+			<script defer type="module" src={src}></script>
 			{code && (
 				<Suspense>
 					<SolutionCode name={name} filepath={code}></SolutionCode>

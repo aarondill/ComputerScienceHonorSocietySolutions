@@ -1,15 +1,10 @@
 import { Suspense } from "react";
-import {
-	getSolutionFiles,
-	getSolutions,
-	SOLUTIONS_DIR,
-} from "../../../lib/getSolutions";
+import { getSolutionFiles, getSolutions } from "../../../lib/getSolutions";
 import { SolutionCode } from "./Code";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import fs from "fs";
 
 async function Main({ name }: { name: string }) {
 	const publicDir = path.resolve("public");

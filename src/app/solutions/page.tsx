@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { getSolutions } from "../../lib/getSolutions";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 async function SolutionsList() {
 	const sols = await getSolutions();
 	return (
@@ -15,7 +15,7 @@ async function SolutionsList() {
 	);
 }
 
-export default async function Page() {
+export default function Page() {
 	return (
 		<>
 			<h1>Solutions</h1>
