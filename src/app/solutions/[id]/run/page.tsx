@@ -16,21 +16,14 @@ async function runTsNode(
 	| { code: number; output: string; success: true }
 > {
 	if (!codepath) return { error: "No path provided", success: false };
-	let res: ChildProcessWithoutNullStreams;
 	console.log(process.env.PATH);
 	console.log(spawnSync("which", ["ts-node"]).stdout.toString());
-	try {
-		res = spawn("ts-node", ["--", codepath], {
-			cwd: ".",
-			stdio: "pipe",
-			timeout: 100 * 1000, // 100 seconds
-			windowsHide: true,
-		});
-	} catch (err) {
-		if (typeof err === "object" && err && "message" in err)
-			return { error: String(err.message), success: false };
-		return { error: String(err), success: false };
-	}
+	const res = spawn("ts-node", ["--", codepath], {
+		cwd: ".",
+		stdio: "pipe",
+		timeout: 100 * 1000, // 100 seconds
+		windowsHide: true,
+	});
 	const output: string[] = [];
 
 	res.stdout.on("data", (data: Buffer) => {
@@ -40,9 +33,9 @@ async function runTsNode(
 		output.push(data.toString("utf8"));
 	});
 
-	return await new Promise((resolve, reject) => {
+	return await new Promise(resolve => {
 		res.on("error", err => {
-			reject(err);
+			resolve({ error: err.message, success: false });
 		});
 		res.on("close", code => {
 			resolve({ code: code ?? 0, output: output.join(""), success: true });
