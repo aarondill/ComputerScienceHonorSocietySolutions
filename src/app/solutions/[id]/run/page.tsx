@@ -1,19 +1,18 @@
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
 import { SolutionCode } from "@/components/Code";
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
 
-async function runTsNode(
+async function runNode(
 	codepath: string
 ): Promise<
 	| { error: string; success: false }
 	| { code: number; output: string; success: true }
 > {
 	if (!codepath) return { error: "No path provided", success: false };
-	spawnSync("pnpm", ["i", "ts-node"]);
-	const res = spawn("ts-node", ["--", codepath], {
+	const res = spawn("node", ["--", codepath], {
 		cwd: ".",
 		stdio: "pipe",
 		timeout: 100 * 1000, // 100 seconds
@@ -38,7 +37,7 @@ async function runTsNode(
 	});
 }
 async function CodeOutput({ path }: { path: string }) {
-	const output = await runTsNode(path);
+	const output = await runNode(path);
 	if (!output.success)
 		return <div>Something went wrong! Error: {output.error}</div>;
 	return (
