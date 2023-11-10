@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { getSolutionFiles, getSolutions } from "../../../lib/getSolutions";
-import { SolutionCode } from "./Code";
+import { getSolutionFiles, getSolutions } from "@/lib/getSolutions";
+import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";

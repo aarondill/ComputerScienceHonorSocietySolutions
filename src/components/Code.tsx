@@ -5,7 +5,7 @@ import fs from "fs/promises";
 
 import hljs_javascript from "highlight.js/lib/languages/javascript";
 import hljs_typescript from "highlight.js/lib/languages/typescript";
-import { getSolutionFiles } from "../../../lib/getSolutions";
+import { getSolutionFiles } from "@/lib/getSolutions";
 hljs.registerLanguage("javascript", hljs_javascript);
 hljs.registerLanguage("typescript", hljs_typescript);
 

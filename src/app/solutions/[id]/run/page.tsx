@@ -1,7 +1,7 @@
 import path from "path";
-import { getSolutionFiles } from "../../../../lib/getSolutions";
+import { getSolutionFiles } from "@/lib/getSolutions";
 import { Suspense } from "react";
-import { SolutionCode } from "../Code";
+import { SolutionCode } from "@/components/Code";
 
 export default async function Page({ params }: { params: { id: string } }) {
 	const name = params.id;

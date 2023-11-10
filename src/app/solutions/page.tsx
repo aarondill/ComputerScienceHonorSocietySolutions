@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { getSolutions } from "../../lib/getSolutions";
+import { getSolutions } from "@/lib/getSolutions";
 import type { Metadata } from "next";
 async function SolutionsList() {
 	const sols = await getSolutions();
