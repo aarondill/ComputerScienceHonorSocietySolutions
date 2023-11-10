@@ -1,11 +1,11 @@
-import { Dirent } from "fs";
+import type { Dirent } from "fs";
 import fs from "fs/promises";
 import path from "path";
-const PUBLIC_DIR = path.resolve("public");
-const SOLUTIONS_DIR = path.join(PUBLIC_DIR, "solutions");
-const CODE_EXTENSIONS = [".ts", ".js"];
-const VIDEO_EXTENSIONS = [".mp4", ".webm"];
-const SCREENSHOT_EXTENSIONS = [".png", ".jpg"];
+export const PUBLIC_DIR = path.resolve("public");
+export const SOLUTIONS_DIR = path.join(PUBLIC_DIR, "solutions");
+export const CODE_EXTENSIONS = [".ts", ".js"];
+export const VIDEO_EXTENSIONS = [".mp4", ".webm"];
+export const SCREENSHOT_EXTENSIONS = [".png", ".jpg"];
 
 export async function getSolutions(): Promise<string[]> {
 	return await fs.readdir(SOLUTIONS_DIR);
@@ -17,7 +17,7 @@ export async function getSolutionFile(
 ): Promise<string | null> {
 	const namePath = path.join(SOLUTIONS_DIR, name);
 	const dir = await fs.opendir(namePath);
-	for (let file = await dir.read(); file != null; file = await dir.read()) {
+	for (let file = await dir.read(); file !== null; file = await dir.read()) {
 		if (typeof match === "function" && !match(file.name, file)) continue;
 		if (typeof match === "string" && file.name !== match) continue;
 		if (Array.isArray(match) && !match.includes(file.name)) continue;

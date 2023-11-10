@@ -1,8 +1,15 @@
 import { Suspense } from "react";
-import { getSolutionFiles, getSolutions } from "../../../lib/getSolutions";
+import {
+	getSolutionFiles,
+	getSolutions,
+	SOLUTIONS_DIR,
+} from "../../../lib/getSolutions";
 import { SolutionCode } from "./Code";
 import path from "path";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import fs from "fs";
 
 async function Main({ name }: { name: string }) {
 	const publicDir = path.resolve("public");
@@ -25,10 +32,10 @@ async function Main({ name }: { name: string }) {
 			<h4>Screenshot:</h4>
 			Here is a screenshot of the code (for meeting requirements):
 			{screenshot ? (
-				<img
+				<Image
 					src={`/${path.relative(publicDir, screenshot)}`}
 					style={{ height: "40vh", display: "block" }}
-					alt="A screenshot of the code displayed above"></img>
+					alt="A screenshot of the code displayed above"></Image>
 			) : (
 				<div>No screenshot found</div>
 			)}
@@ -48,9 +55,12 @@ async function Main({ name }: { name: string }) {
 	);
 }
 
-type Props = { params: { id: string }; searchParams: {} };
+type Props = { params: { id: string }; searchParams: { [s: string]: string } };
 export default async function Page({ params }: Props) {
 	const name = params.id;
+	const sols = await getSolutions();
+	if (!sols.includes(name)) return notFound();
+
 	return (
 		<>
 			<h1>{name}</h1>
@@ -59,17 +69,17 @@ export default async function Page({ params }: Props) {
 	);
 }
 
-export async function getStaticPaths() {
-	const sols = await getSolutions();
-	return {
-		paths: sols.map(file => ({
-			params: {
-				id: file,
-			},
-		})),
-		fallback: false,
-	};
-}
+// export async function getStaticPaths() {
+// 	const sols = await getSolutions();
+// 	return {
+// 		paths: sols.map(file => ({
+// 			params: {
+// 				id: file,
+// 			},
+// 		})),
+// 		fallback: false,
+// 	};
+// }
 
 export function generateMetadata({ params }: Props) {
 	return {
