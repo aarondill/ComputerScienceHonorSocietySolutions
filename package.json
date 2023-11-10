@@ -1,36 +1,36 @@
 {
-	"name": "computersciencehonorsocietysolutions",
-	"version": "0.0.0",
-	"private": true,
-	"description": "My solutions for Computer Science Honor Society",
-	"repository": "https://github.com/aarondill/ComputerScienceHonorSocietySolutions",
-	"license": "MIT",
-	"type": "module",
-	"module": "index.ts",
-	"scripts": {
-		"build": "next build",
-		"dev": "next dev",
-		"lint": "sort-package-json; next lint",
-		"start": "next start",
-		"test": "tsc --noEmit"
-	},
-	"dependencies": {
-		"highlight.js": "^11.9.0",
-		"next": "^14.0.2",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
-	},
-	"devDependencies": {
-		"@types/node": "^20.9.0",
-		"@types/react": "^18.2.37",
-		"@typescript-eslint/eslint-plugin": "^6.10.0",
-		"@typescript-eslint/parser": "^6.10.0",
-		"eslint": "^8.53.0",
-		"eslint-config-next": "^14.0.2",
-		"prettier": "^3.0.3",
-		"release-it": "^16.2.1",
-		"rimraf": "^5.0.5",
-		"sort-package-json": "^2.6.0",
-		"typescript": "^5.2.2"
-	}
+  "name": "computersciencehonorsocietysolutions",
+  "version": "0.0.0",
+  "private": true,
+  "description": "My solutions for Computer Science Honor Society",
+  "repository": "https://github.com/aarondill/ComputerScienceHonorSocietySolutions",
+  "license": "MIT",
+  "type": "module",
+  "module": "index.ts",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "sort-package-json; next lint",
+    "start": "next start",
+    "test": "tsc --noEmit"
+  },
+  "dependencies": {
+    "highlight.js": "^11.9.0",
+    "next": "^14.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.2",
+    "prettier": "^3.0.3",
+    "release-it": "^16.2.1",
+    "rimraf": "^5.0.5",
+    "sort-package-json": "^2.6.0",
+    "typescript": "^5.2.2"
+  }
 }
