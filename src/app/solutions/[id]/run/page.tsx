@@ -1,27 +1,78 @@
-import path from "path";
 import { getSolutionFiles } from "@/lib/getSolutions";
+import path from "node:path";
 import { Suspense } from "react";
 import { SolutionCode } from "@/components/Code";
+import { spawn } from "child_process";
+import { ScrollableOutput } from "@/components/ScrollableOutput";
 
-export default async function Page({ params }: { params: { id: string } }) {
-	const name = params.id;
+async function runTsNode(
+	codepath: string
+): Promise<undefined | { code: number; output: string }> {
+	if (!codepath) return;
+	const res = spawn("ts-node", ["--", codepath], {
+		cwd: ".",
+		stdio: "pipe",
+		timeout: 100 * 1000, // 100 seconds
+		windowsHide: true,
+	});
+	const output: string[] = [];
+
+	res.stdout.on("data", (data: Buffer) => {
+		output.push(data.toString("utf8"));
+	});
+	res.stderr.on("data", (data: Buffer) => {
+		output.push(data.toString("utf8"));
+	});
+
+	return await new Promise((resolve, reject) => {
+		res.on("error", err => {
+			reject(err);
+		});
+		res.on("close", code => {
+			resolve({ code: code ?? 0, output: output.join("") });
+		});
+	});
+}
+async function CodeOutput({ path }: { path: string }) {
+	const output = await runTsNode(path);
+	if (!output) return <div>Failed to spawn ts-node</div>;
+	return (
+		<ScrollableOutput>
+			{output.output}
+			-- Exited with code {output.code} --
+		</ScrollableOutput>
+	);
+}
+
+async function Main({ name }: { name: string }) {
 	const { code } = await getSolutionFiles(name);
 	if (!code) return <div>Could not find code named {name}</div>;
 
-	const publicDir = path.resolve("public");
-	const src = `/${path.relative(publicDir, code)}`;
 	return (
 		<>
-			<script defer type="module" src={src}></script>
-			{code && (
-				<Suspense>
-					<SolutionCode name={name} filepath={code}></SolutionCode>
-				</Suspense>
-			)}
-			<div>
-				Press ctrl+shift+j to open the console and reload the tab to see the
-				output.
-			</div>
+			{/* <script defer type="module" src={src}></script> */}
+			<Suspense>
+				<SolutionCode name={name} filepath={code}></SolutionCode>
+			</Suspense>
+			<Suspense>
+				Output ({path.basename(code)}):
+				<CodeOutput path={code}></CodeOutput>
+			</Suspense>
+			{/* <div> */}
+			{/* 	Press ctrl+shift+j to open the console and reload the tab to see the */}
+			{/* 	output. */}
+			{/* </div> */}
+		</>
+	);
+}
+
+export default function Pages({ params }: { params: { id: string } }) {
+	const name = params.id;
+	return (
+		<>
+			<Suspense>
+				<Main name={name}></Main>
+			</Suspense>
 		</>
 	);
 }
