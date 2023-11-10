@@ -5,33 +5,40 @@
 
 /**
  * @param {boolean} weekday
- * @param {boolean} vacation
+ * @param {boolean} [vacation] default false
  * @return {boolean} shouldSleepIn
  */
 const sleepIn = (weekday, vacation) => vacation || !weekday;
 
 // Tests:
 /**
- * @template A,R
+ * @template {unknown[]} A
+ * @template R
  * @param {R} v
  * @param {(...arg: A)=>R} f
  * @param {A} args
  * @return {boolean}
  */
-const assert = (v, f, ...args) => {
-  const real = f(...args);
+const assert_eq = (v, f, ...args) => {
+  const real = f.apply(undefined, args);
   const name = f.name || "f";
-  const msg = `Test case: ${name}(${args.join()})\t=> ${v}:\t`;
-  if (real != v) {
-    if (globalThis.process) globalThis.process.exitCode = 1;
-    console.error(msg + "Failed! Returned: " + real);
-  } else console.log(msg + "Passed!");
-  return real == v;
+  const msg = `Test case: ${name}(${args.join()})\t=> ${v}:`;
+  if (real === v) {
+    console.log(`${msg}\tPassed!`);
+    return true;
+  }
+
+  console.error(`${msg}\tFailed! Returned: ${real}`);
+  if (globalThis.process) {
+    globalThis.process.exitCode = 1; // If running in node, set exit code to 1
+  }
+  return false;
 };
 // Given examples:
-assert(true, sleepIn, false, false);
-assert(false, sleepIn, true, false);
-assert(true, sleepIn, false, true);
-assert(true, sleepIn, true, true); // the missing case
-assert(true, sleepIn, false); // Undefined should be false -- default to not on vacation
-assert(false, sleepIn, true);
+assert_eq(true, sleepIn, false, false);
+assert_eq(false, sleepIn, true, false);
+assert_eq(true, sleepIn, false, true);
+assert_eq(true, sleepIn, true, true); // the missing case
+// Undefined should be false -- default to not on vacation
+assert_eq(true, sleepIn, false);
+assert_eq(false, sleepIn, true);
