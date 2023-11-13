@@ -11,7 +11,6 @@ export default function StreamedOutput({ codepath }: { codepath: string }) {
   useEffect(() => {
     if (isRunningRef.current) return;
     isRunningRef.current = true;
-    console.log("run");
     const u = new globalThis.URL("/api/run", location.origin);
     u.searchParams.set("codepath", codepath);
     void (async function fetchData() {
