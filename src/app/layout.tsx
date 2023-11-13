@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import type { Metadata } from "next";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -7,11 +8,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Navigation
-          routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
-        {children}
+        <Providers>
+          <Navigation
+            routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
+          {children}
+        </Providers>
       </body>
     </html>
   );

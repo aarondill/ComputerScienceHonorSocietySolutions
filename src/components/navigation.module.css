@@ -1,34 +1,16 @@
-.navigation {
-  /* --navigation-color: white; */
-  /* --navigation-background-color: #333; */
-  --navigation-color: black;
-  --navigation-background-color: white;
-  --navigation-color-active: white;
-  --navigation-background-color-active: black;
-}
 .navigation > ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: var(--navigation-background-color);
 }
 
 .navigation_item {
   float: left;
-  color: var(--navigation-color);
-}
-.navigation_item.active {
-  background-color: var(
-    --navigation-background-color-active,
-    var(--navigation-background-color)
-  );
-  color: var(--navigation-color-active, var(--navigation-color));
 }
 
 .navigation_item a {
   display: block;
-  /* color: var(--navigation-color); */
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
