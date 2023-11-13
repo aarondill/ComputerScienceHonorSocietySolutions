@@ -1,8 +1,7 @@
-import { getSolutionFiles, getSolutions } from "@/lib/getSolutions";
+import { getSolutionFiles } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 
@@ -56,15 +55,14 @@ async function Main({ name }: { name: string }) {
 }
 
 type Props = { params: { id: string }; searchParams: { [s: string]: string } };
-export default async function Page({ params }: Props) {
+export default function Page({ params }: Props) {
   const name = params.id;
-  const sols = await getSolutions();
-  if (!sols.includes(name)) return notFound();
-
   return (
     <>
       <h1>{name}</h1>
-      <Main name={name}></Main>
+      <Loading>
+        <Main name={name}></Main>
+      </Loading>
     </>
   );
 }
