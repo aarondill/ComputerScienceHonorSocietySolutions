@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import type { Metadata } from "next";
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -9,9 +10,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation
-          routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
-        {children}
+        <Providers>
+          <Navigation
+            routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
+          {children}
+        </Providers>
       </body>
     </html>
   );
