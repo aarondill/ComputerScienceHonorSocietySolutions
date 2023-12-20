@@ -6,7 +6,8 @@ import { ScrollableOutput } from "./ScrollableOutput";
 
 import hljs_javascript from "highlight.js/lib/languages/javascript";
 import hljs_typescript from "highlight.js/lib/languages/typescript";
-import { getSolutionFiles } from "@/lib/getSolutions";
+import { PUBLIC_DIR, getSolutionFiles } from "@/lib/getSolutions";
+import { DownloadLink } from "./DownloadLink";
 hljs.registerLanguage("javascript", hljs_javascript);
 hljs.registerLanguage("typescript", hljs_typescript);
 
@@ -23,9 +24,10 @@ export async function SolutionCode({
   const code = await fs.readFile(filepath, "utf8");
   const highlighted = hljs.highlightAuto(code).value;
 
+  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
   return (
     <>
-      {path.basename(filepath)}:
+      <DownloadLink href={fileURL}>{path.basename(filepath)}:</DownloadLink>
       <ScrollableOutput
         height={height}
         dangerouslySetInnerHTML={{ __html: highlighted }}></ScrollableOutput>

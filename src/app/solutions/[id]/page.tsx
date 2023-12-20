@@ -1,13 +1,15 @@
-import { getSolutionFiles } from "@/lib/getSolutions";
+import { PUBLIC_DIR, getSolutionFiles } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/Loading";
+import { DownloadLink } from "@/components/DownloadLink";
 
 async function Main({ name }: { name: string }) {
-  const publicDir = path.resolve("public");
   const { video, code, screenshot } = await getSolutionFiles(name);
+  const imgURL = screenshot ? `/${path.relative(PUBLIC_DIR, screenshot)}` : "";
+  const videoURL = video ? `/${path.relative(PUBLIC_DIR, video)}` : "";
   return (
     <>
       <h4>Code:</h4>
@@ -23,12 +25,14 @@ async function Main({ name }: { name: string }) {
       ) : (
         <div>Could not find code</div>
       )}
-      <h4>Screenshot:</h4>
+      <DownloadLink href={imgURL}>
+        <h4>Screenshot:</h4>
+      </DownloadLink>
       Here is a screenshot of the code (for meeting requirements):
       {screenshot ? (
         <div style={{ height: "40vh", display: "block", position: "relative" }}>
           <Image
-            src={`/${path.relative(publicDir, screenshot)}`}
+            src={imgURL}
             style={{ objectFit: "contain", objectPosition: "left top" }}
             fill
             priority
@@ -38,12 +42,14 @@ async function Main({ name }: { name: string }) {
       ) : (
         <div>No screenshot found</div>
       )}
-      <h4>Screen recording:</h4>
+      <DownloadLink href={videoURL}>
+        <h4>Screen recording:</h4>
+      </DownloadLink>
       Here is a video of the code running:
       {video ? (
         <video controls style={{ height: "40vh", display: "block" }}>
           <source
-            src={`/${path.relative(publicDir, video)}`}
+            src={videoURL}
             type={`video/${path.extname(video).slice(1)}`}
           />
         </video>
