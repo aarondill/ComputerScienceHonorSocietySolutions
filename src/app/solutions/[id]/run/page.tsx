@@ -15,7 +15,7 @@ async function Main({ name }: { name: string }) {
         <SolutionCode name={name} filepath={code}></SolutionCode>
       </Loading>
       Output ({path.basename(code)}):
-      <ScrollableOutput>
+      <ScrollableOutput height={null}>
         <Loading>
           <StreamedOutput codepath={codepath} />
         </Loading>

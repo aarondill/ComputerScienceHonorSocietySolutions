@@ -1,7 +1,7 @@
 import type { DOMAttributes } from "react";
 
 type Props = {
-  height?: string;
+  height?: string | null;
   dangerouslySetInnerHTML?: DOMAttributes<null>["dangerouslySetInnerHTML"];
   children?: React.ReactNode;
 };
@@ -11,11 +11,13 @@ export default function ScrollableOutput({
   dangerouslySetInnerHTML,
   children,
 }: Props) {
+  if (height === undefined) height = "30vh";
+  height ??= undefined;
   return (
     <div
       style={{
         overflowY: "scroll",
-        maxHeight: height ?? "30vh",
+        maxHeight: height,
         marginBottom: "1rem",
         outline: "black solid 2px",
       }}>
