@@ -7,6 +7,12 @@ export const CODE_EXTENSIONS = [".js"];
 export const VIDEO_EXTENSIONS = [".mp4", ".webm"];
 export const SCREENSHOT_EXTENSIONS = [".png", ".jpg"];
 
+export async function solutionExists(name: string): Promise<boolean> {
+  const namePath = path.join(SOLUTIONS_DIR, name);
+  const stat = await fs.stat(namePath).catch(() => null);
+  return stat?.isDirectory() ?? false;
+}
+
 export async function getSolutions(): Promise<string[]> {
   return await fs
     .readdir(SOLUTIONS_DIR, { withFileTypes: true })
