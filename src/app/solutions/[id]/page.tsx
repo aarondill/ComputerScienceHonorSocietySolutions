@@ -5,13 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import { DownloadLink } from "@/components/DownloadLink";
+import React from "react";
+import Spacing from "@/components/Spacing";
 
 function Code(props: { filepath?: string; name: string }) {
-  const { filepath } = props;
-  if (!filepath) return "Could not find code";
+  const { filepath, name } = props;
+  if (!filepath) return null;
   const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
   const filename = path.basename(filepath);
-  const runURL = path.join(path.basename(location.pathname), "run");
+  // HACK: using ./run goes to /solutions/run, so we need to use ./name/run
+  const runURL = path.join(".", name, "run");
   return (
     <Loading>
       <DownloadLink href={fileURL}>{filename}:</DownloadLink>
@@ -20,52 +23,56 @@ function Code(props: { filepath?: string; name: string }) {
     </Loading>
   );
 }
+function Screenshot(props: { filepath?: string }) {
+  const { filepath } = props;
+  if (!filepath) return null;
+  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
+  const filename = path.basename(filepath);
+  return (
+    <>
+      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <div style={{ height: "40vh", display: "block", position: "relative" }}>
+        <Image
+          src={fileURL}
+          style={{ objectFit: "contain", objectPosition: "left top" }}
+          fill
+          priority
+          quality={20} // lower quality -- faster rendering
+          alt="A screenshot of the code"></Image>
+      </div>
+    </>
+  );
+}
+function Recording(props: { filepath?: string }) {
+  const { filepath } = props;
+  if (!filepath) return null;
+  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
+  const filename = path.basename(filepath);
+  const videoType = `video/${path.extname(filepath).slice(1)}`;
+  return (
+    <>
+      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <video controls style={{ height: "40vh", display: "block" }}>
+        <source src={fileURL} type={videoType} />
+      </video>
+    </>
+  );
+}
 
 async function Main({ name }: { name: string }) {
   const { video, code, screenshot } = await getSolutionFiles(name);
-  const imgURL = screenshot ? `/${path.relative(PUBLIC_DIR, screenshot)}` : "";
-  const videoURL = video ? `/${path.relative(PUBLIC_DIR, video)}` : "";
   return (
-    <>
+    <Spacing>
       <Code name={name} filepath={code}></Code>
-      <DownloadLink href={imgURL}>
-        <h4>Screenshot:</h4>
-      </DownloadLink>
-      Here is a screenshot of the code (for meeting requirements):
-      {screenshot ? (
-        <div style={{ height: "40vh", display: "block", position: "relative" }}>
-          <Image
-            src={imgURL}
-            style={{ objectFit: "contain", objectPosition: "left top" }}
-            fill
-            priority
-            quality={20} // lower quality -- faster rendering
-            alt="A screenshot of the code displayed above"></Image>
-        </div>
-      ) : (
-        <div>No screenshot found</div>
-      )}
-      <DownloadLink href={videoURL}>
-        <h4>Screen recording:</h4>
-      </DownloadLink>
-      Here is a video of the code running:
-      {video ? (
-        <video controls style={{ height: "40vh", display: "block" }}>
-          <source
-            src={videoURL}
-            type={`video/${path.extname(video).slice(1)}`}
-          />
-        </video>
-      ) : (
-        <div>No video found</div>
-      )}
-    </>
+      <Screenshot filepath={screenshot}></Screenshot>
+      <Recording filepath={video}></Recording>
+    </Spacing>
   );
 }
 
 type Props = { params: { id: string }; searchParams: { [s: string]: string } };
 export default function Page({ params }: Props) {
-  const name = params.id;
+  const { id: name } = params;
   return (
     <>
       <h1>{name}</h1>
