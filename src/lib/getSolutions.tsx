@@ -1,11 +1,18 @@
 import type { Dirent } from "fs";
 import fs from "fs/promises";
 import path from "path";
-export const PUBLIC_DIR = path.resolve("public");
-export const SOLUTIONS_DIR = path.join(PUBLIC_DIR, "solutions");
-export const CODE_EXTENSIONS = [".js"];
-export const VIDEO_EXTENSIONS = [".mp4", ".webm"];
-export const SCREENSHOT_EXTENSIONS = [".png", ".jpg"];
+import {
+  CODE_EXTENSIONS,
+  SCREENSHOT_EXTENSIONS,
+  SOLUTIONS_DIR,
+  VIDEO_EXTENSIONS,
+} from "./constants";
+
+export async function solutionExists(name: string): Promise<boolean> {
+  const namePath = path.join(SOLUTIONS_DIR, name);
+  const stat = await fs.stat(namePath).catch(() => null);
+  return stat?.isDirectory() ?? false;
+}
 
 export async function getSolutions(): Promise<string[]> {
   return await fs

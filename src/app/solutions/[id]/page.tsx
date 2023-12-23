@@ -1,68 +1,73 @@
-import { PUBLIC_DIR, getSolutionFiles } from "@/lib/getSolutions";
+import { getSolutionFiles } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import { DownloadLink } from "@/components/DownloadLink";
+import { DownloadLinkFromPath } from "@/components/DownloadLink";
+import React from "react";
+import Spacing from "@/components/Spacing";
+import { getPublicURL } from "@/lib/paths";
+
+function Code(props: { filepath?: string; name: string }) {
+  const { filepath, name } = props;
+  if (!filepath) return null;
+  // HACK: using ./run goes to /solutions/run, so we need to use ./name/run
+  const runURL = path.join(".", name, "run");
+  return (
+    <Loading>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
+      <SolutionCode filepath={filepath}></SolutionCode>
+      <Link href={runURL}>Press me to run this code in your browser!</Link>
+    </Loading>
+  );
+}
+function Screenshot(props: { filepath?: string }) {
+  const { filepath } = props;
+  if (!filepath) return null;
+  return (
+    <>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
+      <div style={{ height: "40vh", display: "block", position: "relative" }}>
+        <Image
+          src={getPublicURL(filepath)}
+          style={{ objectFit: "contain", objectPosition: "left top" }}
+          fill
+          priority
+          quality={20} // lower quality -- faster rendering
+          alt="A screenshot of the code"></Image>
+      </div>
+    </>
+  );
+}
+function Recording(props: { filepath?: string }) {
+  const { filepath } = props;
+  if (!filepath) return null;
+  const videoType = `video/${path.extname(filepath).slice(1)}`;
+  return (
+    <>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
+      <video controls style={{ height: "40vh", display: "block" }}>
+        <source src={getPublicURL(filepath)} type={videoType} />
+      </video>
+    </>
+  );
+}
 
 async function Main({ name }: { name: string }) {
   const { video, code, screenshot } = await getSolutionFiles(name);
-  const imgURL = screenshot ? `/${path.relative(PUBLIC_DIR, screenshot)}` : "";
-  const videoURL = video ? `/${path.relative(PUBLIC_DIR, video)}` : "";
   return (
-    <>
-      <h4>Code:</h4>
-      {code ? (
-        <Loading>
-          <div>
-            <SolutionCode name={name} filepath={code}></SolutionCode>
-            <Link href={path.join(name, "run")}>
-              Press me to run this code in your browser!
-            </Link>
-          </div>
-        </Loading>
-      ) : (
-        <div>Could not find code</div>
-      )}
-      <DownloadLink href={imgURL}>
-        <h4>Screenshot:</h4>
-      </DownloadLink>
-      Here is a screenshot of the code (for meeting requirements):
-      {screenshot ? (
-        <div style={{ height: "40vh", display: "block", position: "relative" }}>
-          <Image
-            src={imgURL}
-            style={{ objectFit: "contain", objectPosition: "left top" }}
-            fill
-            priority
-            quality={20} // lower quality -- faster rendering
-            alt="A screenshot of the code displayed above"></Image>
-        </div>
-      ) : (
-        <div>No screenshot found</div>
-      )}
-      <DownloadLink href={videoURL}>
-        <h4>Screen recording:</h4>
-      </DownloadLink>
-      Here is a video of the code running:
-      {video ? (
-        <video controls style={{ height: "40vh", display: "block" }}>
-          <source
-            src={videoURL}
-            type={`video/${path.extname(video).slice(1)}`}
-          />
-        </video>
-      ) : (
-        <div>No video found</div>
-      )}
-    </>
+    <Spacing>
+      <Code name={name} filepath={code}></Code>
+      <Screenshot filepath={screenshot}></Screenshot>
+      <Recording filepath={video}></Recording>
+    </Spacing>
   );
 }
 
 type Props = { params: { id: string }; searchParams: { [s: string]: string } };
 export default function Page({ params }: Props) {
-  const name = params.id;
+  const { id: name } = params;
   return (
     <>
       <h1>{name}</h1>

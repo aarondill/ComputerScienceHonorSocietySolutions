@@ -1,8 +1,10 @@
-import { ensureError, isNodeError, pathJoinNoTraversial } from "@/lib/utils";
+import { ensureError, isNodeError } from "@/lib/utils";
 import type { NextRequest } from "next/server";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import fs from "node:fs/promises";
+import { joinNoTraversial } from "@/lib/paths";
+import { PUBLIC_DIR } from "@/lib/constants";
 type RunNodeReturn =
   | { error: string; success: false }
   | { code: number; success: true };
@@ -42,35 +44,18 @@ type HandlerRet = (
 
 async function handler(request: NextRequest): Promise<HandlerRet> {
   let codepath = request.nextUrl.searchParams.get("codepath");
-  if (!codepath) {
-    return {
-      error: "No codepath provided",
-      status: 400,
-      ok: false,
-    };
-  }
+  if (!codepath)
+    return { error: "No codepath provided", status: 400, ok: false };
   // Given /solutions/hello/hello.js or ./solutions/hello/hello.js
-  codepath = pathJoinNoTraversial(path.resolve("public"), codepath);
-  if (!codepath) {
-    return {
-      error: "Disallowed directory traversal detected in codepath!",
-      status: 400,
-      ok: false,
-    };
-  }
+  codepath = joinNoTraversial(PUBLIC_DIR, codepath);
   let stat;
   try {
     stat = await fs.stat(codepath);
   } catch (e) {
-    const error = ensureError(e);
-    if (isNodeError(error) && error.code === "ENOENT") {
+    if (isNodeError(e) && e.code === "ENOENT")
       return { error: "File not found", status: 400, ok: false };
-    }
-    return {
-      error: error.message,
-      status: 500,
-      ok: false,
-    };
+    const error = ensureError(e);
+    return { error: error.message, status: 500, ok: false };
   }
   if (!stat.isFile()) return { error: "Not a file!", status: 400, ok: false };
 

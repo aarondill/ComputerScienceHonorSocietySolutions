@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
 import { Suspense } from "react";
 
-type Props = { children: React.ReactNode; fallback?: React.ReactNode };
-export default function Loading({ children, fallback }: Props) {
-  return (
-    <Suspense fallback={fallback ?? <div>Loading...</div>}>{children}</Suspense>
-  );
+export default function Loading(props: {
+  children: ReactNode;
+  fallback?: ReactNode;
+}) {
+  const fallback = props.fallback ?? <div>Loading...</div>;
+  return <Suspense fallback={fallback}>{props.children}</Suspense>;
 }
 export { Loading };

@@ -4,27 +4,24 @@ import { SolutionCode } from "@/components/Code";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
 import StreamedOutput from "./Run";
+import { DownloadLinkFromPath } from "@/components/DownloadLink";
+import { getPublicPath } from "@/lib/paths";
 
 async function Main({ name }: { name: string }) {
   const { code } = await getSolutionFiles(name);
   if (!code) return <div>Could not find code named {name}</div>;
-  const codepath = path.relative(path.resolve("public"), code);
   return (
     <>
       <Loading>
-        <SolutionCode name={name} filepath={code}></SolutionCode>
+        <DownloadLinkFromPath filepath={code}></DownloadLinkFromPath>
+        <SolutionCode filepath={code}></SolutionCode>
       </Loading>
       Output ({path.basename(code)}):
       <ScrollableOutput height={null}>
         <Loading>
-          <StreamedOutput codepath={codepath} />
+          <StreamedOutput codepath={getPublicPath(code)} />
         </Loading>
       </ScrollableOutput>
-      {/* <CodeScript filepath={code}></CodeScript> */}
-      {/* <div> */}
-      {/* 	Press ctrl+shift+j to open the console and reload the tab to see the */}
-      {/* 	output. */}
-      {/* </div> */}
     </>
   );
 }
