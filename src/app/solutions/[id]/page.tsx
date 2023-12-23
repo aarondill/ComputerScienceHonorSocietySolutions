@@ -4,20 +4,18 @@ import path from "path";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/Loading";
-import { DownloadLink } from "@/components/DownloadLink";
+import { DownloadLinkFromPath } from "@/components/DownloadLink";
 import React from "react";
 import Spacing from "@/components/Spacing";
 
 function Code(props: { filepath?: string; name: string }) {
   const { filepath, name } = props;
   if (!filepath) return null;
-  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
-  const filename = path.basename(filepath);
   // HACK: using ./run goes to /solutions/run, so we need to use ./name/run
   const runURL = path.join(".", name, "run");
   return (
     <Loading>
-      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
       <SolutionCode filepath={filepath}></SolutionCode>
       <Link href={runURL}>Press me to run this code in your browser!</Link>
     </Loading>
@@ -27,10 +25,9 @@ function Screenshot(props: { filepath?: string }) {
   const { filepath } = props;
   if (!filepath) return null;
   const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
-  const filename = path.basename(filepath);
   return (
     <>
-      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
       <div style={{ height: "40vh", display: "block", position: "relative" }}>
         <Image
           src={fileURL}
@@ -47,11 +44,10 @@ function Recording(props: { filepath?: string }) {
   const { filepath } = props;
   if (!filepath) return null;
   const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
-  const filename = path.basename(filepath);
   const videoType = `video/${path.extname(filepath).slice(1)}`;
   return (
     <>
-      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
       <video controls style={{ height: "40vh", display: "block" }}>
         <source src={fileURL} type={videoType} />
       </video>
