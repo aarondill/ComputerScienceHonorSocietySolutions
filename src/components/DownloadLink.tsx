@@ -1,7 +1,8 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-type Props = { children: React.ReactNode; href: string };
-export function DownloadLink({ href, children }: Props) {
+export function DownloadLink(props: { children: ReactNode; href: string }) {
+  const { href, children } = props;
   return (
     <Link href={href} download>
       {children}
