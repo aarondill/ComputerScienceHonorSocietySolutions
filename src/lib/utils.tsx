@@ -1,17 +1,3 @@
-import path from "path";
-
-export function pathJoinNoTraversial(
-  base: string,
-  ...paths: string[]
-): string | null {
-  const absPrefix = path.resolve(base);
-  const absAppend = path.resolve(path.join(base, ...paths));
-  if (!absAppend.startsWith(absPrefix)) {
-    return null;
-  }
-  return absAppend;
-}
-
 export function ensureError(value: unknown): Error {
   if (value instanceof Error) return value;
 
