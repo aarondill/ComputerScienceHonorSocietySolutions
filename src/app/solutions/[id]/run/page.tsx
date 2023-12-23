@@ -1,4 +1,5 @@
-import { PUBLIC_DIR, getSolutionFiles } from "@/lib/getSolutions";
+import { PUBLIC_DIR } from "@/lib/constants";
+import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
 import { SolutionCode } from "@/components/Code";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
@@ -9,7 +10,7 @@ import { DownloadLinkFromPath } from "@/components/DownloadLink";
 async function Main({ name }: { name: string }) {
   const { code } = await getSolutionFiles(name);
   if (!code) return <div>Could not find code named {name}</div>;
-  const codepath = path.relative(PUBLIC_DIR, code);
+  const codepath = `/${path.relative(PUBLIC_DIR, code)}`;
   return (
     <>
       <Loading>

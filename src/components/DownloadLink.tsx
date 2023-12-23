@@ -1,4 +1,4 @@
-import { PUBLIC_DIR } from "@/lib/getSolutions";
+import { PUBLIC_DIR } from "@/lib/constants";
 import Link from "next/link";
 import path from "node:path";
 import type { ReactNode } from "react";

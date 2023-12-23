@@ -1,4 +1,5 @@
-import { PUBLIC_DIR, getSolutionFiles } from "@/lib/getSolutions";
+import { PUBLIC_DIR } from "@/lib/constants";
+import { getSolutionFiles } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
 import Link from "next/link";
