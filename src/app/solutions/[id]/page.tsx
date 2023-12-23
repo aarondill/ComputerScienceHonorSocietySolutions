@@ -6,25 +6,28 @@ import Image from "next/image";
 import Loading from "@/components/Loading";
 import { DownloadLink } from "@/components/DownloadLink";
 
+function Code(props: { filepath?: string; name: string }) {
+  const { filepath } = props;
+  if (!filepath) return "Could not find code";
+  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
+  const filename = path.basename(filepath);
+  const runURL = path.join(path.basename(location.pathname), "run");
+  return (
+    <Loading>
+      <DownloadLink href={fileURL}>{filename}:</DownloadLink>
+      <SolutionCode filepath={filepath}></SolutionCode>
+      <Link href={runURL}>Press me to run this code in your browser!</Link>
+    </Loading>
+  );
+}
+
 async function Main({ name }: { name: string }) {
   const { video, code, screenshot } = await getSolutionFiles(name);
   const imgURL = screenshot ? `/${path.relative(PUBLIC_DIR, screenshot)}` : "";
   const videoURL = video ? `/${path.relative(PUBLIC_DIR, video)}` : "";
   return (
     <>
-      <h4>Code:</h4>
-      {code ? (
-        <Loading>
-          <div>
-            <SolutionCode name={name} filepath={code}></SolutionCode>
-            <Link href={path.join(name, "run")}>
-              Press me to run this code in your browser!
-            </Link>
-          </div>
-        </Loading>
-      ) : (
-        <div>Could not find code</div>
-      )}
+      <Code name={name} filepath={code}></Code>
       <DownloadLink href={imgURL}>
         <h4>Screenshot:</h4>
       </DownloadLink>
