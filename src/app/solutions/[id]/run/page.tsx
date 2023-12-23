@@ -12,7 +12,7 @@ async function Main({ name }: { name: string }) {
   return (
     <>
       <Loading>
-        <SolutionCode name={name} filepath={code}></SolutionCode>
+        <SolutionCode filepath={code}></SolutionCode>
       </Loading>
       Output ({path.basename(code)}):
       <ScrollableOutput height={null}>
