@@ -1,4 +1,3 @@
-import { PUBLIC_DIR } from "@/lib/constants";
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
 import { SolutionCode } from "@/components/Code";
@@ -6,11 +5,11 @@ import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
 import StreamedOutput from "./Run";
 import { DownloadLinkFromPath } from "@/components/DownloadLink";
+import { getPublicPath } from "@/lib/paths";
 
 async function Main({ name }: { name: string }) {
   const { code } = await getSolutionFiles(name);
   if (!code) return <div>Could not find code named {name}</div>;
-  const codepath = `/${path.relative(PUBLIC_DIR, code)}`;
   return (
     <>
       <Loading>
@@ -20,7 +19,7 @@ async function Main({ name }: { name: string }) {
       Output ({path.basename(code)}):
       <ScrollableOutput height={null}>
         <Loading>
-          <StreamedOutput codepath={codepath} />
+          <StreamedOutput codepath={getPublicPath(code)} />
         </Loading>
       </ScrollableOutput>
     </>

@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import fs from "node:fs/promises";
-import { pathJoinNoTraversial } from "@/lib/paths";
+import { joinNoTraversial } from "@/lib/paths";
 import { PUBLIC_DIR } from "@/lib/constants";
 type RunNodeReturn =
   | { error: string; success: false }
@@ -47,7 +47,7 @@ async function handler(request: NextRequest): Promise<HandlerRet> {
   if (!codepath)
     return { error: "No codepath provided", status: 400, ok: false };
   // Given /solutions/hello/hello.js or ./solutions/hello/hello.js
-  codepath = pathJoinNoTraversial(PUBLIC_DIR, codepath);
+  codepath = joinNoTraversial(PUBLIC_DIR, codepath);
   let stat;
   try {
     stat = await fs.stat(codepath);

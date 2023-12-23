@@ -1,4 +1,3 @@
-import { PUBLIC_DIR } from "@/lib/constants";
 import { getSolutionFiles } from "@/lib/getSolutions";
 import { SolutionCode } from "@/components/Code";
 import path from "path";
@@ -8,6 +7,7 @@ import Loading from "@/components/Loading";
 import { DownloadLinkFromPath } from "@/components/DownloadLink";
 import React from "react";
 import Spacing from "@/components/Spacing";
+import { getPublicURL } from "@/lib/paths";
 
 function Code(props: { filepath?: string; name: string }) {
   const { filepath, name } = props;
@@ -25,13 +25,12 @@ function Code(props: { filepath?: string; name: string }) {
 function Screenshot(props: { filepath?: string }) {
   const { filepath } = props;
   if (!filepath) return null;
-  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
   return (
     <>
       <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
       <div style={{ height: "40vh", display: "block", position: "relative" }}>
         <Image
-          src={fileURL}
+          src={getPublicURL(filepath)}
           style={{ objectFit: "contain", objectPosition: "left top" }}
           fill
           priority
@@ -44,13 +43,12 @@ function Screenshot(props: { filepath?: string }) {
 function Recording(props: { filepath?: string }) {
   const { filepath } = props;
   if (!filepath) return null;
-  const fileURL = `/${path.relative(PUBLIC_DIR, filepath)}`;
   const videoType = `video/${path.extname(filepath).slice(1)}`;
   return (
     <>
       <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
       <video controls style={{ height: "40vh", display: "block" }}>
-        <source src={fileURL} type={videoType} />
+        <source src={getPublicURL(filepath)} type={videoType} />
       </video>
     </>
   );

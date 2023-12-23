@@ -3,6 +3,7 @@ import assert from "assert";
 import { useEffect, useRef, useState } from "react";
 
 const decoder = new TextDecoder();
+/** Takes a relative or 'absolute' path to a file, with /public as the root. */
 export default function StreamedOutput({ codepath }: { codepath: string }) {
   const [data, setData] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
