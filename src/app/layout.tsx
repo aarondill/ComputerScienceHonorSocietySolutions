@@ -1,16 +1,16 @@
 import Navigation from "@/components/Navigation";
 import type { Metadata } from "next";
-import { Providers } from "./providers";
+import { ThemeProvider } from "next-themes";
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
+        <ThemeProvider>
           <Navigation
             routes={{ "/": "Home", "/solutions": "Solutions" }}></Navigation>
           {props.children}
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );
