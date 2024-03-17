@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": ["es2023", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "declarationDir": "types",
+    "declaration": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+}
