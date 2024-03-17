@@ -4,7 +4,7 @@ import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
 import StreamedOutput from "./Run";
 import { getPublicPath } from "@/lib/paths";
-import { Test } from "../page";
+import { Test } from "../Components";
 import Link from "next/link";
 
 async function Main({ name }: { name: string }) {
