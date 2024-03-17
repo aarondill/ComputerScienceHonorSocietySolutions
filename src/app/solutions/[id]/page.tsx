@@ -1,28 +1,43 @@
-import { getSolutionFiles } from "@/lib/getSolutions";
-import { SolutionCode } from "@/components/Code";
-import path from "path";
+import { CodeWindow } from "@/components/Code";
+import path from "path/posix";
+import Spacing from "@/components/Spacing";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import { DownloadLinkFromPath } from "@/components/DownloadLink";
 import React from "react";
-import Spacing from "@/components/Spacing";
 import { getPublicURL } from "@/lib/paths";
+import { getSolutionFiles } from "@/lib/getSolutions";
 
-function Code(props: { filepath?: string; name: string }) {
-  const { filepath, name } = props;
+function Code(props: { filepath: string | null }) {
+  const { filepath } = props;
   if (!filepath) return null;
-  // HACK: using ./run goes to /solutions/run, so we need to use ./name/run
-  const runURL = path.join(".", name, "run");
   return (
     <Loading>
       <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
-      <SolutionCode filepath={filepath}></SolutionCode>
-      <Link href={runURL}>Press me to run this code in your browser!</Link>
+      <CodeWindow filepath={filepath}></CodeWindow>
     </Loading>
   );
 }
-function Screenshot(props: { filepath?: string }) {
+type TestProps = { filepath: string | null } & (
+  | { testURL: string; showTest?: true }
+  | { showTest: false }
+);
+function Test(props: TestProps) {
+  const { filepath, showTest } = props;
+  if (!filepath) return null;
+  return (
+    <Loading>
+      <DownloadLinkFromPath filepath={filepath}></DownloadLinkFromPath>
+      <CodeWindow filepath={filepath}></CodeWindow>
+      {showTest === false ? null : (
+        <Link href={props.testURL}>Press me to run the tests!</Link>
+      )}
+    </Loading>
+  );
+}
+
+function Screenshot(props: { filepath: string | null }) {
   const { filepath } = props;
   if (!filepath) return null;
   return (
@@ -40,7 +55,7 @@ function Screenshot(props: { filepath?: string }) {
     </>
   );
 }
-function Recording(props: { filepath?: string }) {
+function Recording(props: { filepath: string | null }) {
   const { filepath } = props;
   if (!filepath) return null;
   const videoType = `video/${path.extname(filepath).slice(1)}`;
@@ -51,17 +66,6 @@ function Recording(props: { filepath?: string }) {
         <source src={getPublicURL(filepath)} type={videoType} />
       </video>
     </>
-  );
-}
-
-async function Main({ name }: { name: string }) {
-  const { video, code, screenshot } = await getSolutionFiles(name);
-  return (
-    <Spacing>
-      <Code name={name} filepath={code}></Code>
-      <Screenshot filepath={screenshot}></Screenshot>
-      <Recording filepath={video}></Recording>
-    </Spacing>
   );
 }
 
@@ -77,9 +81,25 @@ export default function Page({ params }: Props) {
     </>
   );
 }
+async function Main(props: { name: string }) {
+  const { name } = props;
+  const { code, screenshot, video, test } = await getSolutionFiles(name);
+  const testURL = path.join(".", name, "test");
+  return (
+    <Spacing>
+      <Code filepath={code}></Code>
+      <Screenshot filepath={screenshot}></Screenshot>
+      <Recording filepath={video}></Recording>
+      <Test testURL={testURL} filepath={test}></Test>
+    </Spacing>
+  );
+}
 
-export function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props) {
+  await Promise.resolve();
   return {
     title: params.id,
   };
 }
+
+export { Code, Recording, Screenshot, Test };

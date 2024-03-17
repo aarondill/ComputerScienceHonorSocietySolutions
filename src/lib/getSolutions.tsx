@@ -1,10 +1,11 @@
-import type { Dirent } from "fs";
+import type { Dirent, PathLike } from "fs";
 import fs from "fs/promises";
 import path from "path";
 import {
   CODE_EXTENSIONS,
   SCREENSHOT_EXTENSIONS,
   SOLUTIONS_DIR,
+  TEST_EXTENSIONS,
   VIDEO_EXTENSIONS,
 } from "./constants";
 
@@ -37,23 +38,30 @@ export async function getSolutionFile(
   return null;
 }
 
+async function exists(filepath: PathLike): Promise<boolean> {
+  try {
+    await fs.stat(filepath);
+    return true;
+  } catch {
+    return false;
+  }
+}
 export async function getSolutionFiles(name: string) {
-  const namePath = path.join(SOLUTIONS_DIR, name);
-  const files = await fs.readdir(namePath);
+  const basedir = path.join(SOLUTIONS_DIR, name);
 
-  const findFile = (exts: string[]) => {
-    const f = files.find(n => {
-      const ext = path.extname(n);
-      // Check that project/project.valid -- not: project/code.valid
-      return path.basename(n, ext) === name && exts.includes(ext);
-    });
-    return f && path.join(namePath, f);
-  };
+  async function findFile(exts: string[]): Promise<string | null> {
+    for (const ext of exts) {
+      const f = path.join(basedir, name + ext);
+      if (await exists(f)) return f;
+    }
+    return null;
+  }
 
-  return {
-    video: findFile(VIDEO_EXTENSIONS),
-    code: findFile(CODE_EXTENSIONS),
-    screenshot: findFile(SCREENSHOT_EXTENSIONS),
-    basedir: namePath,
-  };
+  const [video, code, screenshot, test] = await Promise.all([
+    findFile(VIDEO_EXTENSIONS),
+    findFile(CODE_EXTENSIONS),
+    findFile(SCREENSHOT_EXTENSIONS),
+    findFile(TEST_EXTENSIONS),
+  ]);
+  return { video, code, screenshot, test, basedir };
 }

@@ -1,25 +1,25 @@
 import { getSolutionFiles } from "@/lib/getSolutions";
 import path from "node:path";
-import { SolutionCode } from "@/components/Code";
 import { ScrollableOutput } from "@/components/ScrollableOutput";
 import Loading from "@/components/Loading";
 import StreamedOutput from "./Run";
-import { DownloadLinkFromPath } from "@/components/DownloadLink";
 import { getPublicPath } from "@/lib/paths";
+import { Test } from "../page";
+import Link from "next/link";
 
 async function Main({ name }: { name: string }) {
-  const { code } = await getSolutionFiles(name);
-  if (!code) return <div>Could not find code named {name}</div>;
+  const { test } = await getSolutionFiles(name);
+  if (!test) return <div>Error: could not find test named {name}</div>;
   return (
     <>
-      <Loading>
-        <DownloadLinkFromPath filepath={code}></DownloadLinkFromPath>
-        <SolutionCode filepath={code}></SolutionCode>
-      </Loading>
-      Output ({path.basename(code)}):
+      <h1>
+        <Link href=".">{name}</Link>
+      </h1>
+      <Test showTest={false} filepath={test}></Test>
+      <div>Output ({path.basename(test)}):</div>
       <ScrollableOutput height={null}>
         <Loading>
-          <StreamedOutput codepath={getPublicPath(code)} />
+          <StreamedOutput codepath={getPublicPath(test)} />
         </Loading>
       </ScrollableOutput>
     </>

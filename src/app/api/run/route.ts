@@ -9,14 +9,21 @@ type RunNodeReturn =
   | { error: string; success: false }
   | { code: number; success: true };
 
+function shellEscape(str: string[]): string {
+  const special_regex = /[^A-Za-z0-9_/:=-]/;
+  return str
+    .map(s => (special_regex.test(s) ? `'${s.replace(/'/g, `"'"`)}'` : s))
+    .join(" ");
+}
 async function runNode(
   codepath: string,
   output: (data: string) => Promise<void>
 ): Promise<RunNodeReturn> {
   if (!codepath) return { error: "No path provided", success: false };
-  const relPath = path.relative(process.cwd(), codepath);
-  const res = spawn("node", ["--", relPath], {
-    cwd: ".",
+  const cmd = ["vitest", "run", "--", path.basename(codepath)];
+  await output(`> ${shellEscape(cmd)}`);
+  const res = spawn(cmd[0], cmd.slice(1), {
+    cwd: path.dirname(codepath),
     stdio: "pipe",
     timeout: 100 * 1000, // 100 seconds
     windowsHide: true,
