@@ -101,5 +101,3 @@ export async function generateMetadata({ params }: Props) {
     title: params.id,
   };
 }
-
-export { Code, Recording, Screenshot, Test };
