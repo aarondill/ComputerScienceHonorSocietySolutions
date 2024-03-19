@@ -20,8 +20,8 @@ async function runNode(
   output: (data: string) => Promise<void>
 ): Promise<RunNodeReturn> {
   if (!codepath) return { error: "No path provided", success: false };
-  const cmd = ["node","--", path.basename(codepath)];
-  await output(`> ${shellEscape(cmd)}`);
+  const cmd = ["node", "--test-reporter=spec", "--", path.basename(codepath)];
+  await output(`> ${shellEscape(cmd)}\n`);
   const res = spawn(cmd[0], cmd.slice(1), {
     cwd: path.dirname(codepath),
     stdio: "pipe",
