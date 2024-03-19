@@ -1,16 +1,19 @@
-import { expect, describe, it } from "vitest";
-import { sleepIn } from "./sleepIn";
+#!/usr/bin/env node
+"use strict";
+import { sleepIn } from "./sleepIn.js";
+import { it, describe } from "node:test";
+import assert from "node:assert/strict";
 
-describe("sleepIn", () => {
-  it("passes given cases", () => {
-    expect(sleepIn(false, false)).toBe(true);
-    expect(sleepIn(true, false)).toBe(false);
-    expect(sleepIn(false, true)).toBe(true);
-    expect(sleepIn(true, true)).toBe(true); // the missing case
+await describe("sleepIn", async () => {
+  await it("passes given cases", () => {
+    assert.strictEqual(sleepIn(false, false), true);
+    assert.strictEqual(sleepIn(true, false), false);
+    assert.strictEqual(sleepIn(false, true), true);
+    assert.strictEqual(sleepIn(true, true), true); // the missing case
   });
-  it("vacation is an optional parameter", () => {
+  await it("vacation is an optional parameter", () => {
     // Undefined should be false -- default to not on vacation
-    expect(sleepIn(false)).toBe(true);
-    expect(sleepIn(true)).toBe(false);
+    assert.strictEqual(sleepIn(false), true);
+    assert.strictEqual(sleepIn(true), false);
   });
 });

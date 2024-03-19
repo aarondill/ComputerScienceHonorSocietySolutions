@@ -1,20 +1,20 @@
-import { expect, it, describe } from "vitest";
+#!/usr/bin/env node
+"use strict";
+import { it, describe } from "node:test";
+import assert from "node:assert/strict";
 import { implementations } from "./missingChar.js";
 
-// Allow using $name in the description
-const implementationsObj = implementations.map(impl => ({
-  name: impl.name,
-  missingChar: impl,
-}));
-describe.each(implementationsObj)("$name", ({ missingChar }) => {
-  it("passes given cases", () => {
-    expect(missingChar("kitten", 1)).toBe("ktten");
-    expect(missingChar("kitten", 0)).toBe("itten");
-    expect(missingChar("kitten", 4)).toBe("kittn");
-    expect(missingChar("kitten", "kitten".length - 1)).toBe("kitte");
+for (const missingChar of implementations) {
+  await describe(missingChar.name, async () => {
+    await it("passes given cases", () => {
+      assert.strictEqual(missingChar("kitten", 1), "ktten");
+      assert.strictEqual(missingChar("kitten", 0), "itten");
+      assert.strictEqual(missingChar("kitten", 4), "kittn");
+      assert.strictEqual(missingChar("kitten", "kitten".length - 1), "kitte");
+    });
+    await it("passes extreme cases", () => {
+      assert.strictEqual(missingChar("12", 1), "1");
+      assert.strictEqual(missingChar("1", 0), "");
+    });
   });
-  it("passes extreme cases", () => {
-    expect(missingChar("12", 1)).toBe("1");
-    expect(missingChar("1", 0)).toBe("");
-  });
-});
+}

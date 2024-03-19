@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["es2023", "DOM", "DOM.Iterable"],
     "target": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "NodeNext",
     "module": "ESNext",
     "resolveJsonModule": true,
     "allowJs": true,

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+"use strict";
 // Created on 12-20-2023
 // Given a non-empty string and an int n, return a new string where the char at
 // index n has been removed. The value of n will be a valid index of a char in
@@ -26,4 +27,9 @@ const missingChar3 = (str, n) => [...str].filter((_, i) => i !== n).join("");
 // prettier-ignore
 const missingChar4 = (str, n) => Array.from({ length: str.length - 1 }, (_, i) => i < n ? str[i] : str[i + 1]).join("");
 
-export const implementations = [missingChar, missingChar2, missingChar3, missingChar4];
+export const implementations = [
+  missingChar,
+  missingChar2,
+  missingChar3,
+  missingChar4,
+];
