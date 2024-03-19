@@ -3,7 +3,10 @@ import assert from "assert";
 import { useEffect, useRef, useState } from "react";
 
 const decoder = new TextDecoder();
-/** Takes a relative or 'absolute' path to a file, with /public as the root. */
+/**
+Takes a relative or 'absolute' path to a file, with /public as the root.
+Calls /api/run with the file path
+*/
 export default function StreamedOutput({ codepath }: { codepath: string }) {
   const [data, setData] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +17,7 @@ export default function StreamedOutput({ codepath }: { codepath: string }) {
     isRunningRef.current = true;
     const u = new globalThis.URL("/api/run", location.origin);
     u.searchParams.set("codepath", codepath);
-    void (async function fetchData() {
+    async function fetchData() {
       const resp = await fetch(u);
       if (!resp.ok) {
         const json = (await resp.json()) as unknown;
@@ -27,18 +30,18 @@ export default function StreamedOutput({ codepath }: { codepath: string }) {
       if (!resp?.body) return;
       // https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams
       const reader = resp.body.getReader();
-      return await (async function pump(): Promise<void> {
+      async function pump(): Promise<void> {
         const { done, value } = await reader.read();
-        if (done) {
-          isRunningRef.current = false;
-          return;
-        }
+        if (done) return;
         const str = decoder.decode(value);
         setData(prevVal => [...prevVal, str]);
-
         return await pump();
-      })();
-    })();
+      }
+      return await pump();
+    }
+    void fetchData()
+      .catch(() => null)
+      .then(() => (isRunningRef.current = false));
   }, [codepath]);
 
   if (error) return <div>Something went wrong! Error: {error}</div>;

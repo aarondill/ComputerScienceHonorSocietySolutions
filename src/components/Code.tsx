@@ -8,10 +8,7 @@ import hljs_typescript from "highlight.js/lib/languages/typescript";
 hljs.registerLanguage("javascript", hljs_javascript);
 hljs.registerLanguage("typescript", hljs_typescript);
 
-export async function SolutionCode(props: {
-  filepath: string;
-  height?: string;
-}) {
+export async function CodeWindow(props: { filepath: string; height?: string }) {
   const { filepath, height } = props;
   const code = await fs.readFile(filepath, "utf8");
   const highlighted = hljs.highlightAuto(code).value;
