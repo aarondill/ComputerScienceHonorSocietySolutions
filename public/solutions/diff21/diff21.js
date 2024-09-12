@@ -8,6 +8,5 @@
  * @param {number} n
  * @return {number}
  */
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 const diff21 = n => (n > 21 ? 2 * Math.abs(n - 21) : Math.abs(n - 21));
 export { diff21 };
