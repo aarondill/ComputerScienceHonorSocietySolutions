@@ -1,13 +1,12 @@
 import { CodeWindow } from "@/components/Code";
-import Link from "next/link";
-import Image from "next/image";
 import { DownloadLinkFromPath } from "@/components/DownloadLink";
-import { getPublicURL } from "@/lib/paths";
-import path from "path/posix";
 import Loading from "@/components/Loading";
-import React from "react";
+import { getPublicURL } from "@/lib/paths";
+import Image from "next/image";
+import Link from "next/link";
+import path from "path/posix";
 
-function Code(props: { filepath: string | null }) {
+export function Code(props: { filepath: string | null }) {
   const { filepath } = props;
   if (!filepath) return null;
   return (
@@ -21,7 +20,7 @@ type TestProps = { filepath: string | null } & (
   | { testURL: string; showTest?: true }
   | { showTest: false }
 );
-function Test(props: TestProps) {
+export function Test(props: TestProps) {
   const { filepath, showTest } = props;
   if (!filepath) return null;
   return (
@@ -35,7 +34,7 @@ function Test(props: TestProps) {
   );
 }
 
-function Screenshot(props: { filepath: string | null }) {
+export function Screenshot(props: { filepath: string | null }) {
   const { filepath } = props;
   if (!filepath) return null;
   return (
@@ -53,7 +52,7 @@ function Screenshot(props: { filepath: string | null }) {
     </>
   );
 }
-function Recording(props: { filepath: string | null }) {
+export function Recording(props: { filepath: string | null }) {
   const { filepath } = props;
   if (!filepath) return null;
   const videoType = `video/${path.extname(filepath).slice(1)}`;
@@ -66,5 +65,3 @@ function Recording(props: { filepath: string | null }) {
     </>
   );
 }
-
-export { Code, Test, Screenshot, Recording };

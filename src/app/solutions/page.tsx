@@ -1,14 +1,16 @@
-import Link from "next/link";
+import Loading from "@/components/Loading";
 import { getSolutions } from "@/lib/getSolutions";
 import type { Metadata } from "next";
-import Loading from "@/components/Loading";
+import Link from "next/link";
 async function SolutionsList() {
   const sols = await getSolutions();
   return (
     <ul>
-      {sols.map(file => (
-        <li key={file}>
-          <Link href={`/solutions/${file}`}>{file}</Link>
+      {sols.map(({ id, metadata }) => (
+        <li key={id}>
+          <Link href={`/solutions/${id}`}>
+            {metadata.name} - {metadata.createdOn.toLocaleDateString()}
+          </Link>
         </li>
       ))}
     </ul>
