@@ -16,12 +16,24 @@ const exists = path =>
     () => false
   );
 
+/** @param {Parameters<typeof String.raw>} args */
+const dedent = (...args) => {
+  const str = String.raw(...args);
+  const lines = str.split("\n");
+  const indent = lines.find(line => line.trim() !== "")?.match(/^\s*/)?.[0];
+  if (indent === undefined) return str;
+  return lines
+    .map(line => (line.startsWith(indent) ? line.slice(indent.length) : line))
+    .join("\n")
+    .trim();
+};
+
 /**
  * @param {string} dir
  * @returns {Promise<string>}
  */
 async function getSiliconPath(dir = "node_modules") {
-  const _silicon_dest = path.resolve(dir, "silicon");
+  const silicon_dest = path.resolve(dir, "silicon");
   /**
    *  @param {string} path
    * @param {string} type
@@ -36,7 +48,7 @@ async function getSiliconPath(dir = "node_modules") {
 
   const system = process.env.SILICON || "silicon";
   if (use(system, "system")) return system;
-  if (use(_silicon_dest, "cached")) return _silicon_dest;
+  if (use(silicon_dest, "cached")) return silicon_dest;
 
   const tar_dest = path.resolve(dir, "silicon.tar.gz");
   // If the last attempt failed, the tar file may still exist(is it corrupt? should we delete it?)
@@ -64,17 +76,22 @@ async function getSiliconPath(dir = "node_modules") {
       .then(buf => fs.writeFile(tar_dest, Buffer.from(buf)));
   }
 
-  console.log(`Extracting silicon to ${_silicon_dest}`);
+  console.log(`Extracting silicon to ${silicon_dest}`);
   const tarCode = await spawnAsync("tar", ["-xzf", tar_dest, "silicon"], {
-    cwd: dir,
+    cwd: path.dirname(silicon_dest),
   });
   if (tarCode != 0) throw new Error("Failed to extract silicon");
 
-  await fs.chmod(_silicon_dest, "755");
+  await fs.chmod(silicon_dest, "755");
   await fs.rm(tar_dest, { force: true });
 
-  if (use(_silicon_dest, "downloaded")) return _silicon_dest;
-  throw new Error("Failed to find or get silicon");
+  if (use(silicon_dest, "downloaded")) return silicon_dest;
+  throw new Error(
+    dedent`
+    Failed to find or get silicon. Please ensure dependencies are installed.
+    If using vercel, ensure nodejs version is 20.x or higher. This will ensure the correct version of glibc is available.
+    `
+  );
 }
 /** @param {import("fs").PathLike} filepath */
 const subdirs = async filepath =>
