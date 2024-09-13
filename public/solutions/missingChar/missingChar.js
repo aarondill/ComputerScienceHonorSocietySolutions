@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 "use strict";
-// Created on 12-20-2023
-// Given a non-empty string and an int n, return a new string where the char at
-// index n has been removed. The value of n will be a valid index of a char in
-// the original string (i.e. n will be in the range 0..str.length()-1 inclusive).
-
 /**
  * @param {string} str a non-empty string
  * @param {number} n a valid index (0<=n<=str.length-1)

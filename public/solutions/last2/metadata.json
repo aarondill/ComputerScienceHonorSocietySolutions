@@ -1,0 +1,6 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "last2",
+  "description": "return the number of times the substring of the last two chars appears in the string. Exclude the last substring.",
+  "createdOn": "2024-03-19"
+}

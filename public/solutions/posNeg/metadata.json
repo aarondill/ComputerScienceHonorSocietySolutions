@@ -1,0 +1,6 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "posNeg",
+  "description": "Given two numbers x,y and a boolean a, return true if a is true and the sign of x and y are different, else if a is false return true if x and y are both negative, else return false.",
+  "createdOn": "2023-10-12"
+}

@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 "use strict";
-// Created on 11-09-2023
-// The parameter weekday is true if it is a weekday, and the parameter vacation is true if we are on vacation.
-// We sleep in if it is not a weekday or we're on vacation. Return true if we sleep in.
-
 /**
  * @param {boolean} weekday
  * @param {boolean} [vacation] default false

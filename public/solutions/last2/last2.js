@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 "use strict";
-/**
- * @param {string} s
- * return the number of times the substring of the last two chars appears in the string
- * Exclude the last substring
- */
+/** @param {string} s */
 const last2 = s => {
   let count = -1,
     i = -1; // don't include the last substring
@@ -12,11 +8,7 @@ const last2 = s => {
   return count;
 };
 
-/**
- * @param {string} s
- * return the number of times the substring of the last two chars appears in the string
- * Exclude the last substring
- */
+/** @param {string} s */
 const last22 = s =>
   s
     .split("")

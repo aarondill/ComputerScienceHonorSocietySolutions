@@ -1,0 +1,6 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "front3",
+  "description": "Return the first three characters of a string.",
+  "createdOn": "2024-02-08"
+}
