@@ -26,7 +26,8 @@ export async function getSolutions() {
     )
   );
   return solutionData.sort(
-    (a, b) => a.metadata.createdOn.getTime() - b.metadata.createdOn.getTime()
+    /* Sort by date created, newest first */
+    (a, b) => b.metadata.createdOn.getTime() - a.metadata.createdOn.getTime()
   );
 }
 // Finds a file based on the given matcher
