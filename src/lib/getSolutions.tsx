@@ -1,12 +1,13 @@
 import type { Dirent, PathLike } from "fs";
 import fs from "fs/promises";
 import path from "path";
+import z from "zod";
 import {
-  CODE_EXTENSIONS,
-  SCREENSHOT_EXTENSIONS,
-  SOLUTIONS_DIR,
-  TEST_EXTENSIONS,
-  VIDEO_EXTENSIONS,
+    CODE_EXTENSIONS,
+    SCREENSHOT_EXTENSIONS,
+    SOLUTIONS_DIR,
+    TEST_EXTENSIONS,
+    VIDEO_EXTENSIONS,
 } from "./constants";
 
 export async function solutionExists(name: string): Promise<boolean> {
@@ -46,6 +47,23 @@ async function exists(filepath: PathLike): Promise<boolean> {
     return false;
   }
 }
+const metadataSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  createdOn: z.coerce.date(),
+});
+export async function getSolutionMetadata(name: string) {
+  const namePath = path.join(SOLUTIONS_DIR, name);
+  const stat = await fs.stat(namePath).catch(() => null);
+  if (!stat) return null;
+  const metadataPath = path.join(namePath, "metadata.json");
+  if (!(await exists(metadataPath))) return null;
+
+  const contents = await fs.readFile(metadataPath, "utf8");
+  const data = JSON.parse(contents) as unknown;
+  return await metadataSchema.parseAsync(data);
+}
+
 export async function getSolutionFiles(name: string) {
   const basedir = path.join(SOLUTIONS_DIR, name);
 
