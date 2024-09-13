@@ -13,4 +13,3 @@ export function Spacing(props: { children: ReactNode; spacing?: string }) {
     </div>
   );
 }
-export default Spacing;

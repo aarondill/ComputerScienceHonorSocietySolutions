@@ -1,5 +1,5 @@
 import Loading from "@/components/Loading";
-import Spacing from "@/components/Spacing";
+import { Spacing } from "@/components/Spacing";
 import { getSolutionFiles, getSolutionMetadata } from "@/lib/getSolutions";
 import path from "path/posix";
 import { Code, Recording, Screenshot, Test } from "./Components";
