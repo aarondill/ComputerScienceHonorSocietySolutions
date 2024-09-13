@@ -8,8 +8,9 @@
   "type": "module",
   "module": "index.ts",
   "scripts": {
-    "build": "./scripts/build.sh && next build",
-    "dev": "next dev",
+    "build:silicon": "node ./scripts/silicon.js",
+    "build": "pnpm run build:silicon && next build",
+    "dev": "pnpm run build:silicon &&  next dev",
     "lint": "sort-package-json; next lint",
     "start": "next start",
     "test": "tsc --noEmit"
@@ -33,7 +34,6 @@
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.3.3",
     "release-it": "^17.6.0",
-    "rimraf": "^6.0.1",
     "sort-package-json": "^2.10.1",
     "typescript": "^5.6.2"
   },
