@@ -1,0 +1,6 @@
+{
+  "name": "lastDigit",
+  "description": "Given three ints, a b c, return true if two or more of them have the same rightmost digit. The ints are non-negative.",
+  "createdOn": "2024-10-10"
+}
+
