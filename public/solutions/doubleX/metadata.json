@@ -1,0 +1,6 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "doubleX",
+  "description": "Given a string, return true if the first instance of 'x' in the string is immediately followed by another 'x'",
+  "createdOn": "2024-11-14"
+}
