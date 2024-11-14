@@ -9,7 +9,12 @@ import { fileURLToPath } from "url";
 }
 
 const solutionsDir = path.join(process.cwd(), "public", "solutions");
-const name = process.argv[2];
+let name = process.argv[2];
+if (name == "--") name = process.argv[3];
+if (name.startsWith("-")) {
+  console.error("This script accepts no flags!");
+  process.exit(1);
+}
 if (!name) {
   console.error("Usage: new.js <name>");
   process.exit(1);
