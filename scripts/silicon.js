@@ -28,6 +28,9 @@ const dedent = (...args) => {
     .trim();
 };
 
+/** @type {string|null} */
+const FORCE_SILICON_VERSION = "v0.5.2";
+
 /**
  * @param {string} dir
  * @returns {Promise<string>}
@@ -46,8 +49,8 @@ async function getSiliconPath(dir = "node_modules") {
     return path;
   };
 
-  const system = process.env.SILICON || "silicon";
-  if (use(system, "system")) return system;
+  // const system = process.env.SILICON || "silicon";
+  // if (use(system, "system")) return system;
   if (use(silicon_dest, "cached")) return silicon_dest;
 
   const tar_dest = path.resolve(dir, "silicon.tar.gz");
@@ -58,13 +61,16 @@ async function getSiliconPath(dir = "node_modules") {
     const errMsg = `Failed while attempting to install ${github_repo}. Please manually install at https://github.com/${github_repo}/releases/latest`;
 
     console.log("Downloading Silicon from GitHub");
-    const metadataRes = await fetch(
-      `https://api.github.com/repos/${github_repo}/releases/latest`
-    );
-    if (!metadataRes.ok) throw new Error(errMsg);
-    /**@type {{tag_name: string}} */ // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const metadata = await metadataRes.json();
-    const version = metadata.tag_name;
+    let version = FORCE_SILICON_VERSION;
+    if (!version) {
+      const metadataRes = await fetch(
+        `https://api.github.com/repos/${github_repo}/releases/latest`
+      );
+      if (!metadataRes.ok) throw new Error(errMsg);
+      /**@type {{tag_name: string}} */ // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const metadata = await metadataRes.json();
+      version = metadata.tag_name;
+    }
     if (!version) throw new Error(errMsg);
     // NOTE: This only works for linux x86_64 systems
     const asset = `silicon-${version}-x86_64-unknown-linux-gnu.tar.gz`;
