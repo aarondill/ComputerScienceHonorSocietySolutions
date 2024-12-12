@@ -1,0 +1,6 @@
+{
+  "name": "repeatSeperator",
+  "description": "Given two strings, word and a seperator, return a big string made of count occurrences of the word separated by the seperator.",
+  "createdOn": "2024-12-12"
+}
+
