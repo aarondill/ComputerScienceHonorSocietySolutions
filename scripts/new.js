@@ -52,6 +52,7 @@ await fs.writeFile(
   metadata,
   JSON.stringify(
     {
+      $schema: "../../metadata.schema.json",
       name,
       description: "",
       createdOn: new Date().toISOString().split("T")[0],
@@ -72,9 +73,9 @@ process.env.EDITOR ??= "vim";
 const escapedEditor = shellEscape(process.env.EDITOR);
 console.log(`
 # To edit the solution, run:
-cd ${shellEscape(dest)} && \
-${escapedEditor} ${relativeEscaped(metadata)} && \
-${escapedEditor} ${relativeEscaped(impl)} && \
-${escapedEditor} ${relativeEscaped(tests)} && \
+cd ${shellEscape(dest)}
+${escapedEditor} ${relativeEscaped(metadata)}
+${escapedEditor} ${relativeEscaped(impl)}
+${escapedEditor} ${relativeEscaped(tests)}
 # TODO: record a video of your solution and store it in ${relativeEscaped(video)}
 `);
