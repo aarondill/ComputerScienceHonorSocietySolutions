@@ -1,0 +1,7 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "mostLetter",
+  "description": "Given a line containing an unkown number of words, find the most frequent letter in the words. If two tie, choose letter that is first alphabetically.",
+  "createdOn": "2025-02-13"
+}
+
