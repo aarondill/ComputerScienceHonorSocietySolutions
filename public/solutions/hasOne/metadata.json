@@ -1,0 +1,7 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "hasOne",
+  "description": "Given a posive integer n, return true if it contains a 1 digit",
+  "createdOn": "2025-02-13"
+}
+
