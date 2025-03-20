@@ -30,7 +30,6 @@ await fs.mkdir(dest, { recursive: true });
 
 const impl = path.join(dest, name + ".js"),
   tests = path.join(dest, name + ".test.js"),
-  video = path.join(dest, name + ".mp4"),
   metadata = path.join(dest, "metadata.json");
 
 await fs.writeFile(impl, `#!/usr/bin/env node\n"use strict";\n`);
@@ -47,7 +46,6 @@ await describe("${name}", async () => {
 });
 `
 );
-await fs.writeFile(video, "");
 await fs.writeFile(
   metadata,
   JSON.stringify(
@@ -77,5 +75,4 @@ cd ${shellEscape(dest)}
 ${escapedEditor} ${relativeEscaped(metadata)}
 ${escapedEditor} ${relativeEscaped(impl)}
 ${escapedEditor} ${relativeEscaped(tests)}
-# TODO: record a video of your solution and store it in ${relativeEscaped(video)}
 `);
