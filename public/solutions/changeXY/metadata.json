@@ -1,0 +1,7 @@
+{
+  "$schema": "../../metadata.schema.json",
+  "name": "changeXY",
+  "description": "Given a string, compute recusively a new string where all lowercase 'x' chars are replaced with 'y'",
+  "createdOn": "2025-03-20"
+}
+
